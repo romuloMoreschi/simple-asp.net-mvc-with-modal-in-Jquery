@@ -1,0 +1,90 @@
+﻿@model IList<PontosWeb.Models.Produto>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@{
+    ViewBag.Title = "Pagina Inicial";
+}
+<br />
+<a id="popupdiv" class="btn btn-primary text-light" onclick="abrirModal(
+    '@Url.Action("Cadastrar", "Produto", null, Context.Request.Scheme)')">
+    <img src="~/icons/adicionar.svg" />
+    Produto
+</a>
+<a id="popupdiv" class="btn btn-primary text-light" onclick="abrirModal(
+    '@Url.Action("Cadastrar", "Categoria", null, Context.Request.Scheme)')">
+    <img src="~/icons/adicionar.svg" />
+    Categoria
+</a>
+<br />
+@if (TempData["MSG_S"] != null)
+{
+    <br />
+    <p class="alert alert-success">@TempData["MSG_S"]</p>
+
+}
+else if (TempData["MSG_D"] != null)
+{
+    <br />
+    <p class="alert alert-danger">@TempData["MSG_D"]</p>
+}
+<br />
+@if (Model.Count > 0)
+{
+    <div class="table-responsive">
+        <table class="table text-center">
+            <thead>
+                <tr>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.First().Id)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.First().Nome)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.First().Pontos)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.First().Categoria)
+                    </th>
+                    <th scope="col">Acoes</th>
+                </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Pontos)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Categoria.Nome)
+                    </td>
+                    <td>
+                        <a onclick="abrirModal('@Url.Action("Atualizar", "Produto", new { id = item.Id }, Context.Request.Scheme)')">
+                            <img src="~/icons/update.svg" />
+                        </a>
+                        <a asp-action="Excluir" asp-route-id="@item.Id">
+                            <img src="~/icons/delete.svg" />
+                        </a>
+                    </td>
+                </tr>
+
+            }
+        </table>
+    </div>
+    <div>
+    </div>
+}
+else
+{
+    <span>Nenhum registro cadastrado</span>
+
+}

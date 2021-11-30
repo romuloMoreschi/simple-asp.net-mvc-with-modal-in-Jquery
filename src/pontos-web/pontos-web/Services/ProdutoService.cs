@@ -1,9 +1,9 @@
-﻿using System;
-using PontosWeb.Models;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using PontosWeb.Services.Interfaces;
+﻿using PontosWeb.Models;
 using PontosWeb.Repositorio.Interface;
+using PontosWeb.Services.Interfaces;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PontosWeb.Services
 {
@@ -50,18 +50,18 @@ namespace PontosWeb.Services
             return produto;
         }
 
-        public async Task<IList<Produto>> Obter(int skip, int take)
-        {
-            var todosProdutos = await _produtoRepositorio.Obter(skip, take); ;
-
-            return todosProdutos;
-        }
+        public IQueryable<Produto> Obter() => _produtoRepositorio.Obter(); 
 
         public async Task<bool> Remover(long id)
         {
             await _produtoRepositorio.Remover(id);
 
             return true;
+        }
+
+        public async Task<int> TotalRegistro()
+        {
+            return await _produtoRepositorio.TotalRegistro();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using PontosWeb.Models;
+using System.Linq;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 
 namespace PontosWeb.Services.Interfaces
 {
@@ -8,6 +8,6 @@ namespace PontosWeb.Services.Interfaces
     {
         Task<bool> Inserir(Categoria produto);
         Task<Categoria> Obter(long id);
-        Task<IList<Categoria>> Obter();
+        IQueryable<Categoria> Obter();
     }
 }

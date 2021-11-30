@@ -1,6 +1,6 @@
-﻿using PontosWeb.Models;
+﻿using System.Linq;
+using PontosWeb.Models;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 
 namespace PontosWeb.Repositorio.Interface
 {
@@ -10,6 +10,6 @@ namespace PontosWeb.Repositorio.Interface
         Task<T> Atualizar(T obj);
         Task Remover(long id);
         Task<T> Obter(long id);
-        Task<IList<T>> Obter(int skip, int take);
+        IQueryable<T> Obter();
     }
 }

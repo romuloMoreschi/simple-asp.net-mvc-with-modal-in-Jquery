@@ -1,9 +1,9 @@
-﻿using System;
-using PontosWeb.Models;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using PontosWeb.Services.Interfaces;
+﻿using PontosWeb.Models;
 using PontosWeb.Repositorio.Interface;
+using PontosWeb.Services.Interfaces;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PontosWeb.Services
 {
@@ -34,11 +34,6 @@ namespace PontosWeb.Services
             return categoria;
         }
 
-        public async Task<IList<Categoria>> Obter()
-        {
-            var todasCategorias = await _categoriaRepositorio.Obter(0, 10); ;
-
-            return todasCategorias;
-        }
+        public IQueryable<Categoria> Obter() =>_categoriaRepositorio.Obter();
     }
 }

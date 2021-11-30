@@ -1,6 +1,6 @@
 ﻿using PontosWeb.Models;
+using System.Linq;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 
 namespace PontosWeb.Services.Interfaces
 {
@@ -10,6 +10,7 @@ namespace PontosWeb.Services.Interfaces
         Task<bool> Atualizar(Produto produto, long id);
         Task<bool> Remover(long id);
         Task<Produto> Obter(long id);
-        Task<IList<Produto>> Obter(int skip, int take);
+        IQueryable<Produto> Obter();
+        Task<int> TotalRegistro();
     }
 }

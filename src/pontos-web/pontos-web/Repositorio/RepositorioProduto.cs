@@ -1,10 +1,9 @@
-﻿using System.Linq;
-using PontosWeb.Models;
+﻿using Microsoft.EntityFrameworkCore;
 using PontosWeb.DataBase;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+using PontosWeb.Models;
 using PontosWeb.Repositorio.Interface;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PontosWeb.Repositorio
 {
@@ -25,14 +24,18 @@ namespace PontosWeb.Repositorio
                                    .AsNoTracking()
                                    .FirstOrDefaultAsync();
         }
-        public override async Task<IList<Produto>> Obter(int skip, int take)
+        public override IQueryable<Produto> Obter()
+        {                
+                return  _context.Set<Produto>()
+                                .Include(x => x.Categoria)
+                                .AsNoTracking();
+        }
+
+        public async Task<int> TotalRegistro()
         {
             return await _context.Set<Produto>()
-                                .Include(x => x.Categoria)
                                 .AsNoTracking()
-                                .Skip(skip)
-                                .Take(take)
-                                .ToListAsync();
+                                .CountAsync();
         }
     }
 }

@@ -29,13 +29,13 @@ namespace PontosWeb.Controllers
                 if (await _categoriaService.Inserir(categoria))
                 {
                     TempData["MSG_S"] = "Registro salvo com sucesso!";
-                    return View();
-                }
-                TempData["MSG_D"] = "Houve um problema!";
-                return View();
+                    return RedirectToAction("Index", "Produto");
+                }                
             }
 
-            return View(categoria);
+            TempData["MSG_D"] = "Houve um problema!";
+
+            return RedirectToAction("Index", "Produto");
         }
     }
 }

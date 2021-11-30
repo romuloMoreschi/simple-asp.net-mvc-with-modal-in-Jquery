@@ -41,14 +41,7 @@ namespace PontosWeb.Repositorio
                                 .SingleOrDefaultAsync();
         }
 
-        public virtual async Task<IList<T>> Obter(int skip, int take)
-        {
-            return await _context.Set<T>()
-                               .AsNoTracking()
-                               .Skip(skip)
-                               .Take(take)
-                               .ToListAsync(); 
-        }
+        public virtual IQueryable<T> Obter() => _context.Set<T>().AsNoTracking();
 
         public virtual async Task Remover(long id)
         {

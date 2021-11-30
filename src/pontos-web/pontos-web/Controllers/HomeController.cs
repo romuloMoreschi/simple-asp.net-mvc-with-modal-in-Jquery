@@ -16,7 +16,7 @@ namespace PontosWeb.Controllers
 
         public IActionResult Index()
         {
-            return new RedirectResult(Url.Action("Index", "Produto"));
+            return RedirectToAction("Index", "Produto");
         }
 
 

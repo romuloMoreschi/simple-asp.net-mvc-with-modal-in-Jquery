@@ -1,11 +1,12 @@
-﻿using System.Linq;
-using PontosWeb.Models;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using PontosWeb.Services.Paginacao;
-using PontosWeb.Services.Interfaces;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using PontosWeb.Models;
+using PontosWeb.Services.Interfaces;
+using PontosWeb.Services.Paginacao;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PontosWeb.Controllers
 {
@@ -20,17 +21,15 @@ namespace PontosWeb.Controllers
             _categoriaService = categoriaService;
         }
 
-        public async Task<IActionResult> Index(int? numeroPagina)
+        public async Task<IActionResult> Index(int? pageNumber)
         {
-            if (numeroPagina < 0)
-            {
-                numeroPagina = null;
-            }
+            if (pageNumber < 0)
+                pageNumber = null;
 
             var produtos = _produtoService.Obter();
             var totalRegistros = await _produtoService.TotalRegistro();
 
-            return View(await Paginacao<Produto>.Create(produtos, totalRegistros, numeroPagina ?? 1, 10));
+            return View(await Paginacao<Produto>.Create(produtos, totalRegistros, pageNumber ?? 1, 10));
         }
 
         public async Task<IActionResult> Cadastrar()
@@ -84,7 +83,7 @@ namespace PontosWeb.Controllers
                 {
                     TempData["MSG_S"] = "Registro salvo com sucesso!";
                     return RedirectToAction(nameof(Index));
-                }                
+                }
             }
 
             TempData["MSG_D"] = "Houve um problema!";
@@ -103,6 +102,23 @@ namespace PontosWeb.Controllers
             TempData["MSG_D"] = "Houve um problema!";
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public IActionResult Pesquisar(Produto produto)
+        {
+            if (ModelState.IsValid)
+            {
+                var produtos = _produtoService.ObterPorInstancia(produto).ToList();
+                if (produtos != null)
+                {
+                    return Ok(produtos.ToArray());
+                }
+            }
+
+            TempData["MSG_D"] = "Houve um problema!";
+
+            return null;
         }
     }
 }

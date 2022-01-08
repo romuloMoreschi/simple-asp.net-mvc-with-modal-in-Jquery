@@ -12,5 +12,6 @@ namespace PontosWeb.Services.Interfaces
         Task<Produto> Obter(long id);
         IQueryable<Produto> Obter();
         Task<int> TotalRegistro();
+        IQueryable<Produto> ObterPorInstancia(Produto produto);
     }
 }

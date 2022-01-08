@@ -2,10 +2,6 @@
 @model Paginacao<PontosWeb.Models.Produto>
 
 @{
-    ViewData["Title"] = "Home Page";
-}
-
-@{
     ViewBag.Title = "Pagina Inicial";
 }
 <br />
@@ -14,7 +10,6 @@
 {
     <br />
     <p class="alert alert-success">@TempData["MSG_S"]</p>
-
 }
 else if (TempData["MSG_D"] != null)
 {
@@ -24,23 +19,29 @@ else if (TempData["MSG_D"] != null)
 <br />
 
 
-<div class="col-md-12">
-    <div class="row justify-content-end">
-        <div class="col-md-9">
-            <form class="w-100">
-                <div class="md-form mt-0">
-                    <input id="search" class="form-control form-control-dark " type="search" placeholder="Procurar por nome">
-                </div>
-            </form>
-        </div>
+<div class="row no-gutters">
+    <div class="col-12 col-sm-6 col-md-8">
+        <form class="w-100">
+            <div class="md-form mt-0">
+                <input id="search" class="form-control form-control-dark " type="search" placeholder="Procurar por nome" onkeyup="pesquisar()">
+            </div>
+        </form>
+    </div>
 
-        <div class="col-md-3 text-right">
-            <a class="btn btn-dark text-light" onclick="abrirModal(
-                '@Url.Action("Cadastrar", "Produto", null, Context.Request.Scheme)')">
-                <img src="~/icons/adicionar.svg" />
-                Novo produto
-            </a>
-        </div>
+    <div class="col-4 col-sm-2 text-right">
+        <a class="btn btn-dark text-light" onclick="abrirModal(
+                        '@Url.Action("Cadastrar", "Produto", null, Context.Request.Scheme)')">
+            <img src="~/icons/adicionar.svg" alt="adicionar" />
+            Produto
+        </a>
+    </div>
+
+    <div class="col-4 col-sm-2 text-right">
+        <a class="btn btn-dark text-light" onclick="abrirModal(
+                        '@Url.Action("Cadastrar", "Categoria", null, Context.Request.Scheme)')">
+            <img src="~/icons/adicionar.svg" alt="adicionar" />
+            Categoria
+        </a>
     </div>
 </div>
 <br />
@@ -65,52 +66,55 @@ else if (TempData["MSG_D"] != null)
                     <th scope="col">Acoes</th>
                 </tr>
             </thead>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Id)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Nome)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Pontos)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Categoria.Nome)
-                    </td>
-                    <td>
-                        <a onclick="abrirModal('@Url.Action("Atualizar", "Produto", new { id = item.Id }, Context.Request.Scheme)')">
-                            <img src="~/icons/update.svg" />
-                        </a>
-                        <a asp-action="Excluir" asp-route-id="@item.Id">
-                            <img src="~/icons/delete.svg" />
-                        </a>
-                    </td>
-                </tr>
-
-            }
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Pontos)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Categoria.Nome)
+                        </td>
+                        <td>
+                            <a onclick="abrirModal('@Url.Action("Atualizar", "Produto", new {id = item.Id}, Context.Request.Scheme)')">
+                                <img src="~/icons/update.svg" alt="update" />
+                            </a>
+                            <a asp-action="Excluir" asp-route-id="@item.Id">
+                                <img src="~/icons/delete.svg" alt="delete" />
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
         </table>
     </div>
-    {
-        var prevDisabled = !Model.TemPaginaAnterior ? "disabled" : "";
-        var nextDisabled = !Model.TemProximaPagina ? "disabled" : "";
-    }
 
-    <a asp-action="Index"
-       asp-route-pageNumber="@(Model.PaginaInicial - 1)"
-       class="btn btn-dark text-light">
-        Anterior
-    </a>
-    <a asp-action="Index"
-       asp-route-pageNumber="@(Model.PaginaInicial + 1)"
-       class="btn btn-dark text-light">
-        Proxima
-    </a>
-       }
+    var prevDisabled = !Model.TemPaginaAnterior ? "disabled" : "";
+    var nextDisabled = !Model.TemProximaPagina ? "disabled" : "";
+
+    <div class="row">
+        <div class="mx-auto">
+            <a asp-action="Index"
+               asp-route-pageNumber="@(Model.PaginaInicial - 1)"
+               class="btn btn-dark text-light @prevDisabled">
+                Anterior
+            </a>
+            <a asp-action="Index"
+               asp-route-pageNumber="@(Model.PaginaInicial + 1)"
+               class="btn btn-dark text-light @nextDisabled">
+                Proxima
+            </a>
+        </div>
+    </div>
+}
 else
 {
     <span>Nenhum registro encontrado!</span>
-
 }

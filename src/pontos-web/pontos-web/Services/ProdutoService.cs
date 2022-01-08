@@ -63,5 +63,7 @@ namespace PontosWeb.Services
         {
             return await _produtoRepositorio.TotalRegistro();
         }
+
+        public IQueryable<Produto> ObterPorInstancia(Produto produto) => _produtoRepositorio.ObterPorInstancia(produto);
     }
 }
